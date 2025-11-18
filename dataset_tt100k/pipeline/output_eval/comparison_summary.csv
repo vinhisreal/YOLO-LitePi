@@ -1,0 +1,2 @@
+model_combination,detector,classifier,num_test_images,mean_precision,mean_recall,mean_f1,fps,mAP50,mAP50-95
+model.ncnn+resnet18,model.ncnn,resnet18,0,,,,0.0,0.0,0.0
