@@ -1,0 +1,2 @@
+model_combination,detector,classifier,num_test_images,mean_precision,mean_recall,mean_f1,fps,mAP50,mAP50-95,optimizations
+model.ncnn+shufflenetv2-optimized,model.ncnn,shufflenetv2,3019,0.8696705406551861,0.8074088850400213,0.8292912336996705,7.401481269964468,0.8115071706467727,0.6017373671521667,NEON+JIT+Batching
