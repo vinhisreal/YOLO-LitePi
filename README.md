@@ -34,12 +34,12 @@ Tested on **Raspberry Pi 5 (8GB)** running Debian Trixie.
 ### 1. Detection Model Efficiency (Training Phase)
 Comparison of YOLO-LitePi against standard YOLO variants on TT100K dataset.
 
-| Model | Recall | mAP@0.5 | mAP@0.5:0.95 | Training Time Gain |
-| :--- | :--- | :--- | :--- | :--- |
-| YOLOv5n | 0.838 | 0.912 | 0.657 | - |
-| YOLOv8n | 0.839 | 0.916 | 0.662 | - |
-| YOLOv11n | 0.846 | 0.916 | 0.661 | - |
-| **YOLO-LitePi** | **0.794** | **0.870** | **0.603** | **+6.98%** |
+| Model | Recall | mAP@0.5 | mAP@0.5:0.95 |
+| :--- | :--- | :--- | :--- | 
+| YOLOv5n | 0.838 | 0.912 | 0.657 |
+| YOLOv8n | 0.839 | 0.916 | 0.662 |
+| YOLOv11n | 0.846 | 0.916 | 0.661 |
+| **YOLO-LitePi** | **0.794** | **0.870** | **0.603** | 
 
 ### 2. Inference Backend Comparison (Raspberry Pi 5)
 Throughput (FPS) comparison across different inference backends.
@@ -136,8 +136,10 @@ If you find this project useful in your research, please cite our paper:
   organization={Faculty of Information Technology, Ton Duc Thang University}
 }
 ## 👥 Authors
-Nguyen Quang Vinh - Ton Duc Thang University 
+Nguyen Quang Vinh - Ton Duc Thang University
+
 Nguyen Quoc Duy - Ton Duc Thang University 
+
 Tin T. Tran (Supervisor) - Ton Duc Thang University
 
 ## 📄 License
