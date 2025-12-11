@@ -125,15 +125,14 @@ TT100K: A large-scale traffic sign benchmark (Avg resolution 2048x2048).
 VN-Signs: A proprietary dataset collected in Vietnam, featuring complex urban backgrounds and localized sign classes (Avg resolution 1198x681).
 
 ## 📜 Citation
-If you find this project useful in your research, please cite our paper:
+If you find this project useful in your research, please cite our paper:  
 
-
-@inproceedings{vinh2026yololitepi,
-  title={YOLO-LitePi: A Lightweight Real-Time Traffic Sign Detection Pipeline Optimized for Raspberry Pi 5},
-  author={Nguyen, Quang Vinh and Nguyen, Quoc Duy and Tran, Tin T.},
-  booktitle={ICCIES 2026},
-  year={2026},
-  organization={Faculty of Information Technology, Ton Duc Thang University}
+@inproceedings{vinh2026yololitepi,  
+  title={YOLO-LitePi: A Lightweight Real-Time Traffic Sign Detection Pipeline Optimized for Raspberry Pi 5},  
+  author={Nguyen, Quang Vinh and Nguyen, Quoc Duy and Tran, Tin T.},  
+  booktitle={ICCIES 2026},  
+  year={2026},  
+  organization={Faculty of Information Technology, Ton Duc Thang University}  
 }
 ## 👥 Authors
 Nguyen Quang Vinh - Ton Duc Thang University
