@@ -4,9 +4,9 @@
 [![Framework](https://img.shields.io/badge/Framework-NCNN%20%7C%20ONNX%20%7C%20OpenVINO-blue)](https://github.com/Tencent/ncnn)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-> [cite_start][cite: 469] **Official implementation of the paper:** "YOLO-LitePi: A Lightweight Real-Time Traffic Sign Detection Pipeline Optimized for Raspberry Pi 5".
+**Official implementation of the paper:** "YOLO-LitePi: A Lightweight Real-Time Traffic Sign Detection Pipeline Optimized for Raspberry Pi 5".
 
-## Introduction
+## 📖 Introduction
 
 **YOLO-LitePi** is an optimized two-stage Traffic Sign Recognition (TSR) pipeline designed specifically for edge devices, targeting the **Raspberry Pi 5**. Real-time TSR on edge hardware is often constrained by limited compute budgets. We introduce **YOLO-LitePi**, a custom detector that applies hardware-aware architectural scaling, coupled with a lightweight **ShuffleNet V2** classifier. By leveraging the **NCNN** inference engine and system-level optimizations (vectorized NMS, CPU threading), our pipeline achieves real-time performance without specialized accelerators.
 
@@ -27,7 +27,7 @@ The workflow involves:
 `Image Acquisition` -> `Preprocessing` -> `YOLO-LitePi Detection` -> `Vectorized NMS` -> `ROI Extraction` -> `Batched Classification` -> `Output`.
 
 
-## Performance Benchmarks
+## 📊 Performance Benchmarks
 
 Tested on **Raspberry Pi 5 (8GB)** running Debian Trixie.
 
@@ -65,7 +65,7 @@ Why we chose **ShuffleNet V2** for the second stage.
 | EfficientNet-B0 | 99.39% | 143.5 |
 | **ShuffleNet V2** | **99.51%** | **279.2** |
 
-## Installation
+## 🛠️ Installation
 
 ### Prerequisites
 Raspberry Pi 5 (Recommended OS: Raspberry Pi OS Bookworm / Debian Trixie)
@@ -82,7 +82,7 @@ pip install -r requirements.txt
 ```
 Key dependencies include: numpy, opencv-python, ncnn, onnxruntime, openvino.
 
-## Usage
+## 🚀 Usage
 Real-time Inference on Raspberry Pi
 To run the full pipeline using the NCNN backend (recommended for best speed):
 To run the End-to-End (E2E) evaluation system, you need to navigate to the corresponding pipeline directory for each dataset.
@@ -117,14 +117,14 @@ python e2e.py \
   --benchmark_conf 0.25 \
   --device cpu
 ```
-## Datasets
+## 📂 Datasets
 This project utilizes two datasets:
 
 TT100K: A large-scale traffic sign benchmark (Avg resolution 2048x2048).
 
 VN-Signs: A proprietary dataset collected in Vietnam, featuring complex urban backgrounds and localized sign classes (Avg resolution 1198x681).
 
-## Citation
+## 📜 Citation
 If you find this project useful in your research, please cite our paper:
 
 
@@ -135,10 +135,10 @@ If you find this project useful in your research, please cite our paper:
   year={2026},
   organization={Faculty of Information Technology, Ton Duc Thang University}
 }
-## Authors
-  Nguyen Quang Vinh - Ton Duc Thang University 
-  Nguyen Quoc Duy - Ton Duc Thang University 
-  Tin T. Tran (Supervisor) - Ton Duc Thang University
+## 👥 Authors
+Nguyen Quang Vinh - Ton Duc Thang University 
+Nguyen Quoc Duy - Ton Duc Thang University 
+Tin T. Tran (Supervisor) - Ton Duc Thang University
 
-## License
+## 📄 License
 This project is licensed under the MIT License.
