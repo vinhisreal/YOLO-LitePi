@@ -4,84 +4,127 @@
 [![Framework](https://img.shields.io/badge/Framework-NCNN%20%7C%20ONNX%20%7C%20OpenVINO-blue)](https://github.com/Tencent/ncnn)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-> [cite_start]**Official implementation of the paper:** "YOLO-LitePi: A Lightweight Real-Time Traffic Sign Detection Pipeline Optimized for Raspberry Pi 5"[cite: 1, 2].
+> [cite_start][cite: 469] **Official implementation of the paper:** "YOLO-LitePi: A Lightweight Real-Time Traffic Sign Detection Pipeline Optimized for Raspberry Pi 5".
 
-## 📖 Introduction
+## Introduction
 
-[cite_start]**YOLO-LitePi** is an optimized two-stage Traffic Sign Recognition (TSR) pipeline designed specifically for edge devices, targeting the **Raspberry Pi 5**[cite: 9, 12].
-
-[cite_start]Real-time TSR on edge hardware is often constrained by limited compute budgets[cite: 8]. [cite_start]We introduce **YOLO-LitePi**, a custom detector that applies hardware-aware architectural scaling, coupled with a lightweight **ShuffleNet V2** classifier[cite: 9, 10]. [cite_start]By leveraging the **NCNN** inference engine and system-level optimizations (vectorized NMS, CPU threading), our pipeline achieves real-time performance without specialized accelerators[cite: 9, 14].
+**YOLO-LitePi** is an optimized two-stage Traffic Sign Recognition (TSR) pipeline designed specifically for edge devices, targeting the **Raspberry Pi 5**. Real-time TSR on edge hardware is often constrained by limited compute budgets. We introduce **YOLO-LitePi**, a custom detector that applies hardware-aware architectural scaling, coupled with a lightweight **ShuffleNet V2** classifier. By leveraging the **NCNN** inference engine and system-level optimizations (vectorized NMS, CPU threading), our pipeline achieves real-time performance without specialized accelerators.
 
 ### Key Features
-* [cite_start]**Custom Architecture:** Channel-pruned YOLO backbone (1.8M params, 5.2 GFLOPS) optimized for CPU execution[cite: 142].
-* [cite_start]**Two-Stage Pipeline:** High-speed detection followed by batched classification[cite: 10, 174].
-* [cite_start]**Edge Optimized:** Fully optimized for Raspberry Pi 5 (Quad-core Cortex-A76 @ 2.4 GHz)[cite: 39, 175].
-* [cite_start]**High Performance:** Achieves **13-24 FPS** on Pi 5 (NCNN backend), significantly outperforming standard YOLOv8n baselines[cite: 228, 275].
-* [cite_start]**Multi-Backend Support:** Supports ONNX Runtime, OpenVINO, and NCNN[cite: 43].
+**Custom Architecture:** Channel-pruned YOLO backbone (1.8M params, 5.2 GFLOPS) optimized for CPU execution.
+**Two-Stage Pipeline:** High-speed detection followed by batched classification.
+**Edge Optimized:** Fully optimized for Raspberry Pi 5 (Quad-core Cortex-A76 @ 2.4 GHz).
+**High Performance:** Achieves **13-24 FPS** on Pi 5 (NCNN backend), significantly outperforming standard YOLOv8n baselines.
+**Multi-Backend Support:** Supports ONNX Runtime, OpenVINO, and NCNN.
 
-## 🏗️ System Architecture
+## System Architecture
 
-[cite_start]The pipeline consists of two main stages[cite: 73]:
-1.  [cite_start]**Detector (YOLO-LitePi):** A lightweight anchor-free detector derived from YOLOv8n, with a 25% channel reduction and removed objectness branch for speed[cite: 79, 137].
-2.  [cite_start]**Classifier (ShuffleNet V2):** A computationally efficient CNN for recognizing cropped traffic signs[cite: 81, 235].
+The pipeline consists of two main stages:
+1. **Detector (YOLO-LitePi):** A lightweight anchor-free detector derived from YOLOv8n, with a 25% channel reduction and removed objectness branch for speed.
+2. **Classifier (ShuffleNet V2):** A computationally efficient CNN for recognizing cropped traffic signs.
 
 The workflow involves:
-[cite_start]`Image Acquisition` -> `Preprocessing` -> `YOLO-LitePi Detection` -> `Vectorized NMS` -> `ROI Extraction` -> `Batched Classification` -> `Output`[cite: 77, 78, 79, 80, 81].
+`Image Acquisition` -> `Preprocessing` -> `YOLO-LitePi Detection` -> `Vectorized NMS` -> `ROI Extraction` -> `Batched Classification` -> `Output`.
 
-## 📊 Performance Benchmarks
 
-[cite_start]Tested on **Raspberry Pi 5 (8GB)** running Debian Trixie[cite: 192].
+## Performance Benchmarks
 
-### Detection Throughput (NCNN Backend)
-| Model | Dataset | FPS | mAP@0.5 | Performance Gain |
+Tested on **Raspberry Pi 5 (8GB)** running Debian Trixie.
+
+### 1. Detection Model Efficiency (Training Phase)
+Comparison of YOLO-LitePi against standard YOLO variants on TT100K dataset.
+
+| Model | Recall | mAP@0.5 | mAP@0.5:0.95 | Training Time Gain |
 | :--- | :--- | :--- | :--- | :--- |
-| YOLOv8n | TT100K | 13.40 | 0.907 | - |
-| **YOLO-LitePi** | **TT100K** | **16.69** | **0.875** | [cite_start]**+24.5%** [cite: 228] |
-| YOLOv8n | VN-Signs | 13.61 | 0.978 | - |
-| **YOLO-LitePi** | **VN-Signs** | **24.04** | **0.913** | [cite_start]**+74.4%** [cite: 228] |
+| YOLOv5n | 0.838 | 0.912 | 0.657 | - |
+| YOLOv8n | 0.839 | 0.916 | 0.662 | - |
+| YOLOv11n | 0.846 | 0.916 | 0.661 | - |
+| **YOLO-LitePi** | **0.794** | **0.870** | **0.603** | **+6.98%** |
 
-### End-to-End Latency
-[cite_start]The complete pipeline (Detection + Classification) sustains **13.22 - 16.83 FPS** with a total latency of **<60ms** per frame, meeting real-time requirements for ADAS applications[cite: 12, 258].
+### 2. Inference Backend Comparison (Raspberry Pi 5)
+Throughput (FPS) comparison across different inference backends.
 
-## 🛠️ Installation
+| Backend | Dataset | YOLOv8n (FPS) | **YOLO-LitePi (FPS)** | **Gain** |
+| :--- | :--- | :--- | :--- | :--- |
+| **ONNX Runtime** | TT100K | 6.74 | **9.16** | +35.9% |
+| | VN-Signs | 6.85 | **14.30** | +108.7% |
+| **OpenVINO** | TT100K | 13.26 | **15.51** | +16.9% |
+| | VN-Signs | 13.81 | **22.74** | +64.6% |
+| **NCNN** | TT100K | 13.40 | **16.69** | **+24.5%** |
+| | VN-Signs | 13.61 | **24.04** | **+74.4%** |
+
+> *Note: NCNN provides the best latency for real-time applications.*
+
+### 3. Classifier Selection (CPU Profiling)
+Why we chose **ShuffleNet V2** for the second stage.
+
+| Model | Accuracy (VN-Signs) | FPS (CPU) |
+| :--- | :--- | :--- |
+| ResNet18 | 99.27% | 196.2 |
+| MobileNet V2 | 99.33% | 131.4 |
+| EfficientNet-B0 | 99.39% | 143.5 |
+| **ShuffleNet V2** | **99.51%** | **279.2** |
+
+## Installation
 
 ### Prerequisites
-* [cite_start]Raspberry Pi 5 (Recommended OS: Raspberry Pi OS Bookworm / Debian Trixie) [cite: 192]
-* [cite_start]Python 3.13 
+Raspberry Pi 5 (Recommended OS: Raspberry Pi OS Bookworm / Debian Trixie)
+* Python 3.11+
 
 ### 1. Clone the repository
 ```bash
-git clone [https://github.com/username/YOLO-LitePi.git](https://github.com/username/YOLO-LitePi.git)
+git clone [https://github.com/vinhisreal/YOLO-LitePi.git](https://github.com/vinhisreal/YOLO-LitePi.git)
 cd YOLO-LitePi
-2. Install Dependencies
-Bash
-
+```
+### 2. Install Dependencies
+```bash
 pip install -r requirements.txt
-
+```
 Key dependencies include: numpy, opencv-python, ncnn, onnxruntime, openvino.
 
-🚀 Usage
+## Usage
 Real-time Inference on Raspberry Pi
 To run the full pipeline using the NCNN backend (recommended for best speed):
+To run the End-to-End (E2E) evaluation system, you need to navigate to the corresponding pipeline directory for each dataset.
+### 1. Run on TT100K Dataset
+Use the `e2e.py` script located in `src/tt100k/pipeline/`.
+```bash
+# 1. Navigate to the working directory
+cd src/tt100k/pipeline
 
-Bash
+# 2. Run evaluation (Example: NCNN backend with ShuffleNetV2)
+python e2e.py \
+  --detector_param "../convert/model/yolo_plus/yolo_plus_ncnn_model/model.ncnn.param" \
+  --detector_bin "../convert/model/yolo_plus/yolo_plus_ncnn_model/model.ncnn.bin" \
+  --classifier "../weight/shufflenetv2.pth" \
+  --clf_arch shufflenetv2 \
+  --benchmark_conf 0.25 \
+  --detector_threads 4 \
+  --save_viz True
+```
+### 2. Run on VN-Signs Dataset
+Similarly, use the script located in src/vntsr/pipeline/.
+```bash
+# 1. Navigate to the working directory
+cd src/vntsr/pipeline
 
-python main_edge.py --source 0 --backend ncnn --conf 0.25
-Arguments
---source: Video source (0 for webcam, or path to video file).
-
---backend: Inference backend (ncnn, openvino, onnx, pytorch).
-
---conf: Confidence threshold for detection.
-
-📂 Datasets
+# 2. Run evaluation
+python e2e.py \
+  --detector_param "../convert/model/yolo_plus/yolo_plus_ncnn_model/model.ncnn.param" \
+  --detector_bin "../convert/model/yolo_plus/yolo_plus_ncnn_model/model.ncnn.bin" \
+  --classifier "../weight/shufflenetv2_vn.pth" \
+  --clf_arch shufflenetv2 \
+  --benchmark_conf 0.25 \
+  --device cpu
+```
+## Datasets
 This project utilizes two datasets:
 
 TT100K: A large-scale traffic sign benchmark (Avg resolution 2048x2048).
+
 VN-Signs: A proprietary dataset collected in Vietnam, featuring complex urban backgrounds and localized sign classes (Avg resolution 1198x681).
 
-
-📜 Citation
+## Citation
 If you find this project useful in your research, please cite our paper:
 
 
@@ -92,16 +135,10 @@ If you find this project useful in your research, please cite our paper:
   year={2026},
   organization={Faculty of Information Technology, Ton Duc Thang University}
 }
-👥 Authors
+## Authors
+  Nguyen Quang Vinh - Ton Duc Thang University 
+  Nguyen Quoc Duy - Ton Duc Thang University 
+  Tin T. Tran (Supervisor) - Ton Duc Thang University
 
-Nguyen Quang Vinh - Ton Duc Thang University 
-
-
-Nguyen Quoc Duy - Ton Duc Thang University 
-
-
-Tin T. Tran (Supervisor) - Ton Duc Thang University 
-
-
-📄 License
+## License
 This project is licensed under the MIT License.
